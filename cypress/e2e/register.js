@@ -20,7 +20,7 @@ describe('registration', () => {
      * then I'll get an early error. If it doesn't work at all,
      * then I'll know that I have a problem with my authentication.
      */
-
+    // ----------------------------------------------------------------
     // cy.window()
     //   .its('localStorage.token')
     //   .should('be.a', 'string');
