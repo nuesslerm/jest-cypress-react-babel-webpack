@@ -34,11 +34,13 @@ Cypress.Commands.add('createUser', overrides => {
    * so let’s move our cy.request command to register a new user into
    * a custom Cypress command so we can use that wherever we need a new user.
    */
-  cy.request({
-    url: 'http://localhost:3000/login',
-    method: 'POST',
-    body: user,
-  }).then(response => ({...response.body.user}));
+  return cy
+    .request({
+      url: 'http://localhost:3000/login',
+      method: 'POST',
+      body: user,
+    })
+    .then(response => ({...response.body.user}));
   // }).then(response => ({...response.body.user, ...user}));
 });
 
@@ -54,11 +56,20 @@ Cypress.Commands.add('assertLoggedInAs', user => {
 });
 
 Cypress.Commands.add('loginUser', user => {
-  cy.request({
-    url: 'http://localhost:3000/login',
-    method: 'POST',
-    body: user,
-  }).then(response =>
-    window.localStorage.setItem('token', response.body.user.token),
-  );
+  return cy
+    .request({
+      url: 'http://localhost:3000/login',
+      method: 'POST',
+      body: user,
+    })
+    .then(response => {
+      window.localStorage.setItem('token', response.body.user.token);
+      return {...response.body.user};
+    });
+});
+
+Cypress.Commands.add('loginAsNewUser', () => {
+  return cy.createUser().then(user => {
+    cy.loginUser(user);
+  });
 });

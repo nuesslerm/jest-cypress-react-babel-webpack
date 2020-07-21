@@ -22,14 +22,18 @@ describe('anonymous calculator', () => {
 });
 
 describe('authenticated calculator', () => {
-  it.only('displays the username', () => {
-    cy.createUser().then(user => {
-      cy.loginUser(user).then(() => {
-        cy.visit('/');
-        cy.findByTestId('username-display').should('have.text', user.username);
-        cy.findByText(/logout/i).click();
-        cy.findByTestId('username-display').should('not.exist');
-      });
+  it('displays the username', () => {
+    // cy.loginUser(user).then(() => {
+    //   cy.visit('/');
+    //   cy.findByTestId('username-display').should('have.text', user.username);
+    //   cy.findByText(/logout/i).click();
+    //   cy.findByTestId('username-display').should('not.exist');
+    // });
+    cy.loginAsNewUser().then(user => {
+      cy.visit('/');
+      cy.findByTestId('username-display').should('have.text', user.username);
+      cy.findByText(/logout/i).click();
+      cy.findByTestId('username-display').should('not.exist');
     });
   });
 });
