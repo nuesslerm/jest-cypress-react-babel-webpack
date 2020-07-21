@@ -23,3 +23,32 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+import {buildUser} from '../support/generate';
+
+Cypress.Commands.add('createUser', overrides => {
+  const user = buildUser(overrides);
+
+  /**
+   * We’re going to need a newly created user for several tests
+   * so let’s move our cy.request command to register a new user into
+   * a custom Cypress command so we can use that wherever we need a new user.
+   */
+  cy.request({
+    url: 'http://localhost:3000/login',
+    method: 'POST',
+    body: user,
+  }).then(response => ({...response.body.user}));
+  // }).then(response => ({...response.body.user, ...user}));
+});
+
+Cypress.Commands.add('assertHome', () => {
+  cy.url().should('eq', `${Cypress.config().baseUrl}/`);
+});
+
+Cypress.Commands.add('assertLoggedInAs', user => {
+  cy.window()
+    .its('localStorage.token')
+    .should('be.a', 'string');
+  cy.findByTestId('username-display').should('have.text', user.username);
+});

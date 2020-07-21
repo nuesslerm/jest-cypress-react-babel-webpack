@@ -1,13 +1,18 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import {ThemeProvider} from 'emotion-theming'
-import {Link} from '@reach/router'
-import Calculator from './calculator'
-import * as themes from './themes'
+import React from 'react';
+import PropTypes from 'prop-types';
+import {ThemeProvider} from 'emotion-theming';
+import {Link} from '@reach/router';
+import Calculator from './calculator';
+import * as themes from './themes';
 
 function App({user, logout}) {
-  const [theme, setTheme] = React.useState('dark')
-  const handleThemeChange = ({target: {value}}) => setTheme(value)
+  const [theme, setTheme] = React.useState('dark');
+  const handleThemeChange = ({target: {value}}) => setTheme(value);
+  // if (window.Cypres) {
+  //   debugger
+  //   window.theme = theme
+  //   window.setTheme = setTheme
+  // }
   return (
     <ThemeProvider theme={themes[theme]}>
       <Calculator />
@@ -45,9 +50,12 @@ function App({user, logout}) {
         }}
       >
         {user ? (
-          <button type="button" onClick={logout}>
-            Logout
-          </button>
+          <>
+            <div data-testid="username-display">{user.username}</div>
+            <button type="button" onClick={logout}>
+              Logout
+            </button>
+          </>
         ) : (
           <>
             <Link to="/register">Register</Link>
@@ -64,14 +72,14 @@ function App({user, logout}) {
         <a href="https://reacttraining.com/">React Training</a>
       </div>
     </ThemeProvider>
-  )
+  );
 }
 
 App.propTypes = {
   user: PropTypes.any,
   logout: PropTypes.func,
-}
+};
 
-export default App
+export default App;
 
 /* eslint import/namespace:0 */
