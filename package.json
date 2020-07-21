@@ -18,10 +18,10 @@
     "start:client": "serve --no-clipboard --single --listen 8080 dist",
     "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|json|css|html|md)\"",
     "lint": "jest --config test/jest.lint.js",
-    "validate": "npm run test:coverage",
-    "postinstall": "cd server && npm install",
+    "validate": "yarn run test:coverage",
+    "postinstall": "cd server && yarn install",
     "netlify": "npm-run-all --parallel test:coverage build && cp -r coverage/lcov-report dist/lcov-report",
-    "setup": "npm install && npm run validate"
+    "setup": "yarn install && yarn run validate"
   },
   "jest-runner-eslint": {
     "cliOptions": {
@@ -50,6 +50,7 @@
     "@babel/preset-react": "^7.0.0",
     "@babel/runtime": "^7.5.5",
     "@emotion/babel-preset-css-prop": "^10.0.14",
+    "@testing-library/cypress": "^6.0.0",
     "@testing-library/jest-dom": "^4.1.0",
     "@testing-library/react": "^9.1.3",
     "ajv-keywords": "^3.5.1",
