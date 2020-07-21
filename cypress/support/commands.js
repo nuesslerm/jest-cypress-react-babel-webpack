@@ -52,3 +52,13 @@ Cypress.Commands.add('assertLoggedInAs', user => {
     .should('be.a', 'string');
   cy.findByTestId('username-display').should('have.text', user.username);
 });
+
+Cypress.Commands.add('loginUser', user => {
+  cy.request({
+    url: 'http://localhost:3000/login',
+    method: 'POST',
+    body: user,
+  }).then(response =>
+    window.localStorage.setItem('token', response.body.user.token),
+  );
+});
